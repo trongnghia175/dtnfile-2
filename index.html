@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[DTN FILE]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* CSS tích hợp luôn vào đây để Bo dễ copy */
+        :root {
+            --gold: #d4af37;
+            --dark-bg: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .header h1 {
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Layout Masonry giúp ảnh không bị cắt */
+        .gallery {
+            columns: 4 250px; /* Tự động chia cột theo kích thước màn hình */
+            column-gap: 20px;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .img-card {
+            position: relative;
+            margin-bottom: 20px;
+            break-inside: avoid;
+            background: var(--glass);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.4s;
+            backdrop-filter: blur(10px);
+        }
+
+        .img-card img {
+            width: 100%;
+            height: auto; /* Đảm bảo hiện full ảnh */
+            display: block;
+            transition: 0.5s;
+        }
+
+        .img-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Nút tải về xuất hiện khi hover */
+        .actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .img-card:hover .actions {
+            opacity: 1;
+        }
+
+        .btn-download {
+            background: var(--gold);
+            color: black;
+            text-decoration: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-download:hover {
+            transform: scale(1.1);
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>DTN FILE</h1>
+        <p>Gửi - Share Nhanh Chóng - Tiện Lợi  <br>(Ảnh - File - Tài Nguyên - ...)<br><br><hr></p>
+    </div>
+
+    <div class="gallery" id="imageGallery">
+        </div>
+
+    <script>
+        // Danh sách ảnh Bo muốn đưa lên (thay bằng link ảnh thật của bạn)
+        
+
+      
+
+    
+    const gallery = document.getElementById('imageGallery');
+    const totalImages = 250;
+    const myImages = [];
+
+    // Tự động tạo danh sách đường dẫn dựa trên quy tắc chia thư mục
+    for (let i = 1; i <= totalImages; i++) {
+        let folder = "";
+        if (i <= 10) {
+            folder = "img1/";
+        } else if (i <= 20) {
+            folder = "img2/";
+        } else {
+            folder = "img3/";
+        }
+
+        const fileName = `PHO${i.toString().padStart(5, '0')}.JPG`;
+        myImages.push(folder + fileName);
+    }
+
+    // Hiển thị và kiểm tra ảnh lỗi
+    myImages.forEach((url, index) => {
+        const card = document.createElement('div');
+        card.className = 'img-card';
+
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = `Photo ${index + 1}`;
+
+        // Nếu ảnh không tồn tại ở thư mục đó, xóa bỏ khung card
+        img.onerror = function() {
+            card.remove();
+        };
+
+        // Khi ảnh tải thành công, thêm nội dung và nút tải về
+        img.onload = function() {
+            card.innerHTML = `
+                <img src="${url}" alt="Photo ${index + 1}">
+                <div class="actions">
+                    <a href="${url}" download="Anh_${index + 1}.JPG" target="_blank" class="btn-download">
+                        <i class="fas fa-download"></i> TẢI VỀ
+                    </a>
+                </div>
+            `;
+            gallery.appendChild(card);
+        };
+    });
+</script>
+
+
+</body>
+</html>
